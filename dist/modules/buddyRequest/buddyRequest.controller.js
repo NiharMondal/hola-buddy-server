@@ -23,7 +23,7 @@ const createBuddyRequest = (0, handleAsync_1.handleAsync)((req, res) => __awaite
     });
 }));
 //get all buddyRequest
-const getBuddyRequest = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllBuddiesForSingletrip = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield buddyRequest_services_1.buddyRequestServices.getAllBuddiesForSingletrip(req.params.tripId);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 200,
@@ -33,12 +33,36 @@ const getBuddyRequest = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(v
 }));
 //update buddy request
 const updateBuddyRequest = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { buddyId } = req.params;
-    const result = yield buddyRequest_services_1.buddyRequestServices.updateBuddyRequest(req.body, buddyId);
+    const { id } = req.params;
+    const result = yield buddyRequest_services_1.buddyRequestServices.updateBuddyRequest(req.body, id);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 200,
-        message: "Travel buddy request responded successfully",
+        message: "Travel buddy request updated successfully",
         data: result,
     });
 }));
-exports.buddyController = { createBuddyRequest, getBuddyRequest, updateBuddyRequest };
+const getOutgoingRequest = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { buddyId } = req.params;
+    const result = yield buddyRequest_services_1.buddyRequestServices.getOutgoingRequest(buddyId);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Your outgoing requests retrieved successfully",
+        data: result,
+    });
+}));
+const getIncommingRequest = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const result = yield buddyRequest_services_1.buddyRequestServices.getIncommingRequest(userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Your incomming requests retrieved successfully",
+        data: result,
+    });
+}));
+exports.buddyController = {
+    createBuddyRequest,
+    getAllBuddiesForSingletrip,
+    updateBuddyRequest,
+    getOutgoingRequest,
+    getIncommingRequest,
+};

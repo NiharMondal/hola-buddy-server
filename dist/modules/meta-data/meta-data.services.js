@@ -12,29 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profileServices = void 0;
+exports.metaDataServices = void 0;
 const prisma_1 = __importDefault(require("../../lib/prisma"));
-//get user profile userId
-const getUserProfile = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const userProfile = yield prisma_1.default.profile.findUniqueOrThrow({
-        where: {
-            userId: userId,
-        },
-    });
-    return userProfile;
+const metaData = () => __awaiter(void 0, void 0, void 0, function* () {
+    const userCount = yield prisma_1.default.user.count();
+    const tripCount = yield prisma_1.default.trip.count();
+    const buddyRequestCount = yield prisma_1.default.buddyRequest.count();
+    return [
+        { count: userCount, name: "User Count" },
+        { count: tripCount, name: "Trip Count" },
+        { count: buddyRequestCount, name: "Buddy Request Count" },
+    ];
 });
-//update profile
-const updateProfile = (userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const userProfile = yield prisma_1.default.profile.upsert({
-        where: {
-            userId,
-        },
-        update: payload,
-        create: Object.assign({ userId }, payload),
-    });
-    return userProfile;
-});
-exports.profileServices = {
-    getUserProfile,
-    updateProfile,
-};
+exports.metaDataServices = { metaData };

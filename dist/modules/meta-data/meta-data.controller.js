@@ -9,31 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profileController = void 0;
+exports.metaDataController = void 0;
 const handleAsync_1 = require("../../lib/handleAsync");
 const sendResponse_1 = require("../../lib/sendResponse");
-const profile_services_1 = require("./profile.services");
-//get-user profile according to token
-const getUserProfile = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId } = req.params;
-    const result = yield profile_services_1.profileServices.getUserProfile(userId);
+const meta_data_services_1 = require("./meta-data.services");
+const metaData = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield meta_data_services_1.metaDataServices.metaData();
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 200,
-        message: "User profile retrieved successfully",
+        message: "Meta data fetched successfully",
         data: result,
     });
 }));
-//update profile
-const updateProfile = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId } = req.params;
-    const result = yield profile_services_1.profileServices.updateProfile(userId, req.body);
-    (0, sendResponse_1.sendResponse)(res, {
-        statusCode: 200,
-        message: "User profile updated successfully",
-        data: result,
-    });
-}));
-exports.profileController = {
-    getUserProfile,
-    updateProfile,
-};
+exports.metaDataController = { metaData };

@@ -33,16 +33,31 @@ const createTrip = (payload, user) => __awaiter(void 0, void 0, void 0, function
     });
     return result;
 });
+const showCaseTrip = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.trip.findMany({
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    email: true,
+                    avatar: true,
+                },
+            },
+        },
+        take: 3,
+    });
+    return result;
+});
 //get all trip
-const getAllTrips = (query, options) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllTrips = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, limit, skip } = paginationHelpers_1.paginationHelper.calculatePagination(options);
-    const { searchTerm } = query, filterData = __rest(query, ["searchTerm"]);
+    const { search, budget } = filters, filterData = __rest(filters, ["search", "budget"]);
     const queryResult = [];
-    if (searchTerm) {
+    if (search) {
         queryResult.push({
             OR: trip_constant_1.searchAbleKey.map((value) => ({
                 [value]: {
-                    contains: query.searchTerm,
+                    contains: filters.search,
                     mode: "insensitive",
                 },
             })),
@@ -50,16 +65,37 @@ const getAllTrips = (query, options) => __awaiter(void 0, void 0, void 0, functi
     }
     if (Object.keys(filterData).length > 0) {
         queryResult.push({
-            AND: Object.keys(filterData).map((key) => ({
+            OR: Object.keys(filterData).map((key) => ({
                 [key]: {
                     equals: filterData[key],
                 },
             })),
         });
     }
+    if (budget) {
+        const splitedValue = budget.split(",");
+        queryResult.push({
+            OR: [
+                {
+                    budget: {
+                        gte: Number(splitedValue[0]),
+                        lte: Number(splitedValue[1]),
+                    },
+                },
+            ],
+        });
+    }
     const whereCondition = { AND: queryResult };
     const result = yield prisma_1.default.trip.findMany({
         where: whereCondition,
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    email: true,
+                },
+            },
+        },
         skip,
         take: limit,
         orderBy: options.sortBy && options.sortOrder
@@ -71,16 +107,62 @@ const getAllTrips = (query, options) => __awaiter(void 0, void 0, void 0, functi
             },
     });
     const total = yield prisma_1.default.trip.count({ where: whereCondition });
+    const totalPages = Math.ceil(total / limit);
     return {
         meta: {
             page,
             limit,
-            total,
+            totalPages,
         },
         data: result,
     };
 });
+const loggedInUserTrip = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const trip = yield prisma_1.default.trip.findMany({ where: { userId: id } });
+    return trip;
+});
+const singleTrip = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = prisma_1.default.trip.findUnique({
+        where: { id },
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    avatar: true,
+                },
+            },
+        },
+    });
+    return result;
+});
+const updateTrip = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    //checking trip exists  or not
+    yield prisma_1.default.trip.findUniqueOrThrow({ where: { id } });
+    //updating here
+    const result = prisma_1.default.trip.update({
+        where: { id },
+        data: Object.assign({}, payload),
+    });
+    return result;
+});
+const deleteTrip = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield prisma_1.default.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        yield tx.buddyRequest.deleteMany({
+            where: {
+                tripId: id,
+            },
+        });
+        const result = tx.trip.delete({ where: { id } });
+        return result;
+    }));
+    return res;
+});
 exports.tripServices = {
     createTrip,
     getAllTrips,
+    singleTrip,
+    updateTrip,
+    deleteTrip,
+    loggedInUserTrip,
+    showCaseTrip,
 };

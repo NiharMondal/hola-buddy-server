@@ -53,7 +53,7 @@ const updateBuddyRequest = (payload, id) => __awaiter(void 0, void 0, void 0, fu
     if (!exsitingBuddy) {
         throw new CustomError_1.default(404, "Your requested buddyId and tripId doesn't match");
     }
-    const result = yield prisma_1.default.buddyRequest.update({
+    const result = yield prisma_1.default.buddyRequest.updateMany({
         where: {
             id,
             tripId: payload.tripId,
@@ -64,8 +64,63 @@ const updateBuddyRequest = (payload, id) => __awaiter(void 0, void 0, void 0, fu
     });
     return result;
 });
+const getOutgoingRequest = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.buddyRequest.findMany({
+        where: {
+            userId,
+        },
+        select: {
+            status: true,
+            trips: {
+                select: {
+                    destination: true,
+                    budget: true,
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+    return result;
+});
+const getIncommingRequest = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            trip: {
+                select: {
+                    id: true,
+                    title: true,
+                    budget: true,
+                    destination: true,
+                    buddyRequest: {
+                        select: {
+                            id: true,
+                            status: true,
+                            tripId: true,
+                            user: {
+                                select: {
+                                    name: true,
+                                    email: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+    return result;
+});
 exports.buddyRequestServices = {
     createBuddyRequest,
     getAllBuddiesForSingletrip,
     updateBuddyRequest,
+    getOutgoingRequest,
+    getIncommingRequest,
 };

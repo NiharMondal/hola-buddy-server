@@ -12,4 +12,5 @@ exports.default = {
         jwt_secret: process.env.JWT_SECRET,
         expires_in: process.env.EXPIRES_IN,
     },
+    salt_round: process.env.SALT_ROUND,
 };

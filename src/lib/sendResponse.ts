@@ -1,12 +1,12 @@
 import { Response } from "express";
-type TMeta ={
-	page:number,
-	total: number
-	limit: number,
-}
+type TMeta = {
+	page: number;
+	totalPages: number;
+	limit: number;
+};
 export const sendResponse = <T>(
 	res: Response,
-	param: { statusCode: number; message: string; meta?:TMeta, data: T }
+	param: { statusCode: number; message: string; meta?: TMeta; data: T }
 ) => {
 	res.status(param.statusCode).json({
 		success: true,

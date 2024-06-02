@@ -16,7 +16,7 @@ const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config"));
 const prisma_1 = __importDefault(require("../lib/prisma"));
-const checkAuth = () => {
+const checkAuth = (...roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const token = req.headers.authorization;
@@ -24,14 +24,17 @@ const checkAuth = () => {
                 throw new CustomError_1.default(401, "You are not authorized");
             }
             const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt.jwt_secret);
-            const { email, iat, exp } = decoded;
+            const { id, role } = decoded;
             const user = yield prisma_1.default.user.findUnique({
                 where: {
-                    email: email,
+                    id: id,
                 },
             });
             if (!user) {
-                throw new CustomError_1.default(404, "This user is not found!");
+                throw new CustomError_1.default(401, "This user is not found!");
+            }
+            if (token && !roles.includes(role)) {
+                throw new CustomError_1.default(401, "You are not authorized");
             }
             req.user = decoded;
             next();

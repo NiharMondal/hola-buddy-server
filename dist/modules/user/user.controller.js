@@ -13,15 +13,6 @@ exports.userController = void 0;
 const handleAsync_1 = require("../../lib/handleAsync");
 const user_services_1 = require("./user.services");
 const sendResponse_1 = require("../../lib/sendResponse");
-//create user
-const createUser = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_services_1.userServices.registerUser(req.body);
-    (0, sendResponse_1.sendResponse)(res, {
-        statusCode: 201,
-        message: "User created successfully",
-        data: result,
-    });
-}));
 //get all user
 const getUser = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_services_1.userServices.getUser();
@@ -31,4 +22,24 @@ const getUser = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, v
         data: result,
     });
 }));
-exports.userController = { createUser, getUser };
+//SINGLE USER
+const singleUser = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield user_services_1.userServices.singleUser(id);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "User fetched successfully",
+        data: result,
+    });
+}));
+//upload image
+const updateUser = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield user_services_1.userServices.updateUser(id, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "User updated successfully",
+        data: result,
+    });
+}));
+exports.userController = { getUser, singleUser, updateUser };

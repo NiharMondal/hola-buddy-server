@@ -29,7 +29,7 @@ const getAllTrips = handleAsync(async (req: Request, res: Response) => {
 	sendResponse(res, {
 		statusCode: 200,
 		message: "Trips retrieved successfully",
-		meta: result.meta,
+		meta: result?.meta,
 		data: result.data,
 	});
 });

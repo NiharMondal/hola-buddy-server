@@ -35,11 +35,57 @@ const getAllTrips = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 200,
         message: "Trips retrieved successfully",
-        meta: result.meta,
+        meta: result === null || result === void 0 ? void 0 : result.meta,
         data: result.data,
+    });
+}));
+const showCaseTrip = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield trip_services_1.tripServices.showCaseTrip();
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Trips retrieved successfully",
+        data: result,
+    });
+}));
+const loggedInUserTrip = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const result = yield trip_services_1.tripServices.loggedInUserTrip(user.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "My trip retrived successfully",
+        data: result,
+    });
+}));
+const singleTrip = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield trip_services_1.tripServices.singleTrip(req.params.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Trip retrived successfully",
+        data: result,
+    });
+}));
+const updateTrip = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield trip_services_1.tripServices.updateTrip(req.params.id, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Trip updated successfully",
+        data: result,
+    });
+}));
+const deleteTrip = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield trip_services_1.tripServices.deleteTrip(req.params.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Trip deleted successfully",
+        data: result,
     });
 }));
 exports.tripController = {
     createTrip,
     getAllTrips,
+    singleTrip,
+    updateTrip,
+    deleteTrip,
+    showCaseTrip,
+    loggedInUserTrip,
 };

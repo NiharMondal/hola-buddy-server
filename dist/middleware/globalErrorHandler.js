@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.globalErrorHandler = void 0;
+const client_1 = require("@prisma/client");
 const zod_1 = require("zod");
 const globalErrorHandler = (err, req, res, next) => {
     const errorResponse = {
@@ -8,6 +9,12 @@ const globalErrorHandler = (err, req, res, next) => {
         message: err.message || "Something went wrong",
         errorDetails: err,
     };
+    if (err instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+        if (err.code === "P2002") {
+            errorResponse.statusCode = 400;
+            errorResponse.message = `Unique validation error`;
+        }
+    }
     if (err instanceof zod_1.ZodError) {
         errorResponse.statusCode = 400;
         errorResponse.message = err.issues
@@ -21,7 +28,7 @@ const globalErrorHandler = (err, req, res, next) => {
         });
     }
     else {
-        errorResponse.statusCode = 500;
+        errorResponse.statusCode = err.statusCode || 500;
         errorResponse.message = err.message;
         errorResponse.errorDetails = err;
     }

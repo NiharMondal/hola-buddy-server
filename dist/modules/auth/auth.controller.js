@@ -13,6 +13,15 @@ exports.authController = void 0;
 const handleAsync_1 = require("../../lib/handleAsync");
 const auth_services_1 = require("./auth.services");
 const sendResponse_1 = require("../../lib/sendResponse");
+//create user
+const registerUser = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_services_1.authServices.registerUser(req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        message: "User created successfully",
+        data: result,
+    });
+}));
 const login = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_services_1.authServices.login(req.body);
     (0, sendResponse_1.sendResponse)(res, {
@@ -21,4 +30,13 @@ const login = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
-exports.authController = { login };
+const changePassword = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const result = yield auth_services_1.authServices.changePassword(user.id, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "Password changed successfully",
+        data: result,
+    });
+}));
+exports.authController = { registerUser, login, changePassword };
