@@ -6,12 +6,11 @@ import { notFound } from "./middleware/notFound";
 
 const app: Application = express();
 
-app.use(
-	cors({
-		credentials: true,
-		origin: ["https://assignment-9-front-end.vercel.app"],
-	})
-);
+const corsOptions = {
+	origin: "https://assignment-9-front-end.vercel.app",
+	credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
