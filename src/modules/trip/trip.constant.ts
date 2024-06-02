@@ -7,4 +7,4 @@ export const tripFilterableFields = [
 	"budget",
 ];
 
-export const searchAbleKey = ["destination", "description"];
+export const searchAbleKey = ["destination", "title"];
