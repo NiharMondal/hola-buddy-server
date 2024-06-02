@@ -35,7 +35,7 @@ const getAllTrips = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 200,
         message: "Trips retrieved successfully",
-        meta: result === null || result === void 0 ? void 0 : result.meta,
+        meta: result.meta,
         data: result.data,
     });
 }));
