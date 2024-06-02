@@ -6,13 +6,16 @@ import { notFound } from "./middleware/notFound";
 
 const app: Application = express();
 
-const corsOptions = {
-	origin: "https://assignment-9-front-end.vercel.app",
-	credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(
+	cors({
+		origin: [
+			"https://assignment-9-front-end.vercel.app",
+			"http://localhost:3000",
+		],
+		credentials: true,
+	})
+);
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 //use routes
 app.use("/api/v1", router);
