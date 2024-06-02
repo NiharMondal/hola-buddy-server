@@ -10,7 +10,7 @@ const corsOptions = {
 	origin: "https://assignment-9-front-end.vercel.app",
 	credentials: true,
 };
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
