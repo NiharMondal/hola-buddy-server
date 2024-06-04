@@ -1,20 +1,30 @@
 # Get started
 
-At first You need to clone this repository
+At first clone this repository.
 
 ```
-   git clone https://github.com/Porgramming-Hero-web-course/l2-b2-fullstack-track-assignment-8-NiharMondal
-
-   npm install
+npm install
 ```
 
-Now go to **.env.local** file and update your **.env** file accordingly.
-
-Then run this command
+Then create **.env.local** and replace your _.env.local_ file.  
+Your **.env.local** file should be like this:
 
 ```
-   npm run dev
+# Connect to Supabase via connection pooling with Supavisor.
+DATABASE_URL="your_supabase_credentials"
+
+# Direct connection to the database. Used for migrations.
+DIRECT_URL="your_supabase_credentials"
+
+JWT_SECRET= "your_secret"
+EXPIRES_IN= 1d
+SALT_ROUND= 10
 ```
 
+### You just set up environment.
 
-Enjoy this app.
+```
+npm run dev
+```
+
+#### That's it. You are ready to use this application.
