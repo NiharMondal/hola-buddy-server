@@ -19,11 +19,11 @@ const updateProfile = async (
 		where: {
 			userId,
 		},
-		update: payload,
 		create: {
 			userId,
 			...payload,
 		},
+		update: payload,
 	});
 	return userProfile;
 };

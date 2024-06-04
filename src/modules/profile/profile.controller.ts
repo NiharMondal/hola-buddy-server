@@ -19,7 +19,7 @@ const getUserProfile = handleAsync(async (req: Request, res: Response) => {
 //update profile
 const updateProfile = handleAsync(async (req: Request, res: Response) => {
 	const { userId } = req.params;
-
+	console.log(req.body);
 	const result = await profileServices.updateProfile(userId, req.body);
 
 	sendResponse(res, {

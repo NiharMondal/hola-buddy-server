@@ -10,6 +10,11 @@ router.get(
 	checkAuth(UserRole.admin, UserRole.super_admin),
 	userController.getUser
 );
+router.patch(
+	"/role/:id",
+	checkAuth(UserRole.admin, UserRole.super_admin),
+	userController.updateRole
+);
 
 router
 	.route("/:id")

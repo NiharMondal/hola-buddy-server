@@ -39,4 +39,17 @@ const updateUser = handleAsync(async (req: Request, res: Response) => {
 	});
 });
 
-export const userController = { getUser, singleUser, updateUser };
+//only admin can update user role
+const updateRole = handleAsync(async (req: Request, res: Response) => {
+	const { id } = req.params;
+
+	const result = await userServices.updateRole(id, req.body);
+
+	sendResponse(res, {
+		statusCode: 200,
+		message: "User role updated successfully",
+		data: result,
+	});
+});
+
+export const userController = { getUser, singleUser, updateUser, updateRole };

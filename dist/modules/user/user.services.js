@@ -16,7 +16,14 @@ exports.userServices = void 0;
 const prisma_1 = __importDefault(require("../../lib/prisma"));
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 const getUser = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.default.user.findMany();
+    const result = yield prisma_1.default.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+        },
+    });
     return result;
 });
 const singleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,8 +53,18 @@ const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     });
     return user;
 });
+//only admin can update role
+const updateRole = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    yield prisma_1.default.user.update({
+        where: {
+            id,
+        },
+        data: payload,
+    });
+});
 exports.userServices = {
     getUser,
     singleUser,
     updateUser,
+    updateRole,
 };

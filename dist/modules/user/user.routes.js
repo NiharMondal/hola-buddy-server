@@ -10,6 +10,7 @@ const checkAuth_1 = __importDefault(require("../../middleware/checkAuth"));
 const client_1 = require("@prisma/client");
 const router = (0, express_1.Router)();
 router.get("/", (0, checkAuth_1.default)(client_1.UserRole.admin, client_1.UserRole.super_admin), user_controller_1.userController.getUser);
+router.patch("/role/:id", (0, checkAuth_1.default)(client_1.UserRole.admin, client_1.UserRole.super_admin), user_controller_1.userController.updateRole);
 router
     .route("/:id")
     .get((0, checkAuth_1.default)(client_1.UserRole.admin, client_1.UserRole.user, client_1.UserRole.super_admin), user_controller_1.userController.singleUser)

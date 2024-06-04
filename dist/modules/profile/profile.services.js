@@ -29,8 +29,8 @@ const updateProfile = (userId, payload) => __awaiter(void 0, void 0, void 0, fun
         where: {
             userId,
         },
-        update: payload,
         create: Object.assign({ userId }, payload),
+        update: payload,
     });
     return userProfile;
 });

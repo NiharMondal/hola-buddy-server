@@ -6,7 +6,14 @@ type TUserWithProfile = {
 };
 
 const getUser = async () => {
-	const result = await prisma.user.findMany();
+	const result = await prisma.user.findMany({
+		select: {
+			id: true,
+			name: true,
+			email: true,
+			role: true,
+		},
+	});
 
 	return result;
 };
@@ -44,8 +51,22 @@ const updateUser = async (id: string, payload: Partial<TUserWithProfile>) => {
 	return user;
 };
 
+//only admin can update role
+const updateRole = async (
+	id: string,
+	payload: { payload: { role: string } }
+) => {
+	await prisma.user.update({
+		where: {
+			id,
+		},
+		data: payload,
+	});
+};
+
 export const userServices = {
 	getUser,
 	singleUser,
 	updateUser,
+	updateRole,
 };

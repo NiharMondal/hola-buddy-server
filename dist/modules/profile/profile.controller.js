@@ -26,6 +26,7 @@ const getUserProfile = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(vo
 //update profile
 const updateProfile = (0, handleAsync_1.handleAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
+    console.log(req.body);
     const result = yield profile_services_1.profileServices.updateProfile(userId, req.body);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 200,
