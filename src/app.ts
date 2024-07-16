@@ -9,7 +9,7 @@ const app: Application = express();
 app.use(
 	cors({
 		origin: [
-			"https://assignment-9-front-end.vercel.app",
+			"https://hola-buddy.vercel.app/",
 			"http://localhost:3000",
 		],
 		credentials: true,
