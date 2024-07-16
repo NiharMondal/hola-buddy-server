@@ -11,7 +11,7 @@ const notFound_1 = require("./middleware/notFound");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: [
-        "https://assignment-9-front-end.vercel.app",
+        "https://hola-buddy.vercel.app/",
         "http://localhost:3000",
     ],
     credentials: true,
