@@ -10,10 +10,7 @@ const globalErrorHandler_1 = require("./middleware/globalErrorHandler");
 const notFound_1 = require("./middleware/notFound");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: [
-        "https://hola-buddy.vercel.app/",
-        "http://localhost:3000",
-    ],
+    origin: "https://hola-buddy.vercel.app",
     credentials: true,
 }));
 app.use(express_1.default.json());
