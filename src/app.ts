@@ -8,10 +8,7 @@ const app: Application = express();
 
 app.use(
 	cors({
-		origin: [
-			"https://hola-buddy.vercel.app/",
-			"http://localhost:3000",
-		],
+		origin: "https://hola-buddy.vercel.app",
 		credentials: true,
 	})
 );
